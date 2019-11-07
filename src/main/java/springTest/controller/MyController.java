@@ -1,16 +1,25 @@
-package controller;
+package springTest.controller;
 
-import model.Person;
+import org.hibernate.Session;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import springTest.HibernateUtil;
+import springTest.model.Person;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import springTest.service.PersonService;
 
 
 @Controller
 public class MyController {
+
+    @Autowired
+    PersonService personService;
 
     @RequestMapping("/add1")
     public ModelAndView add1(@RequestParam(value="email") String email,
@@ -33,14 +42,33 @@ public class MyController {
 
         System.out.println("adding @ModelAttribute: " + person.getEmail() + person.getFirstName() + person.getLastName());
 
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("generic");
+        ModelAndView mv = new ModelAndView("generic");
         mv.getModel().put("title", "Subscribed!");
         mv.getModel().put("msg", "Welcome! (via @ModelAttribute)");
         mv.getModel().put("person", person);
 
         return mv;
     }
+
+    @RequestMapping("/add3")
+    public String add3(Person person, RedirectAttributes redirAttr) {
+
+        System.out.println(person);
+        redirAttr.addFlashAttribute("person", person);
+        return "redirect:/rest/add";
+    }
+
+
+
+    @RequestMapping("/add4")
+    @ResponseBody
+    public Person add4(@ModelAttribute Person person) {
+        Session session = HibernateUtil.getSessionFactory().openSession();
+        personService.createPerson(session, person.getEmail(), person.getFirstName(), person.getLastName());
+        session.close();
+        return person;
+    }
+
 
     @PostMapping("/remove")
     public ModelAndView remove(@RequestParam(value="email") String email) {

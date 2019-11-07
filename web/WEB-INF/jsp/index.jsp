@@ -61,5 +61,53 @@
     </label>
   </form>
 
+  <form action="add3" method="get">
+    <label>
+      Email:
+      <input type="email" name="email" required/>
+    </label>
+    <br/>
+
+    <label>
+      First name:
+      <input type="text" name="firstName" required/>
+    </label>
+    <br/>
+
+    <label>
+      Last name:
+      <input type="text" name="lastName" required/>
+    </label>
+    <br/>
+
+    <label>
+      <input type="submit" id="submit3" value="Send (@BodyRequest) via REST"/>
+    </label>
+  </form>
+
+  <form action="add4" method="post">
+    <label>
+      Email:
+      <input type="email" name="email" required/>
+    </label>
+    <br/>
+
+    <label>
+      First name:
+      <input type="text" name="firstName" required/>
+    </label>
+    <br/>
+
+    <label>
+      Last name:
+      <input type="text" name="lastName" required/>
+    </label>
+    <br/>
+
+    <label>
+      <input type="submit" id="submit4" value="Send (only one actually connected to DB)"/>
+    </label>
+  </form>
+
   </body>
 </html>
